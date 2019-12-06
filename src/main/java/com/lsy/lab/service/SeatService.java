@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.lsy.lab.exception.ExceptionCast;
 import com.lsy.lab.mapper.SeatMapper;
 import com.lsy.lab.model.Seat;
+import com.lsy.lab.model.Seat;
 import com.lsy.lab.model.vo.SeatVo;
 import com.lsy.lab.myUtil.MyNumberUtils;
 import com.lsy.lab.response.CommonCode;
