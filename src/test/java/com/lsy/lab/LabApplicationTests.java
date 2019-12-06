@@ -1,5 +1,6 @@
 package com.lsy.lab;
 
+import com.lsy.lab.model.vo.SeatVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +11,10 @@ class LabApplicationTests {
 
     @Test
     void contextLoads() {
+        SeatVo seatVo = new SeatVo();
+        seatVo.setUserName("000");
+        //System.out.println(seatVo.getUserId());
+        System.out.println(seatVo);
     }
 
   @Test
