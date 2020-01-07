@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.lsy.lab.exception.ExceptionCast;
 import com.lsy.lab.mapper.SignMapper;
 import com.lsy.lab.model.Sign;
+import com.lsy.lab.model.User;
 import com.lsy.lab.model.vo.SignVo;
 import com.lsy.lab.model.vo.UserVo;
 import com.lsy.lab.myUtil.MyNumberUtils;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,18 +43,65 @@ public class SignService {
     * */
     public QueryResponseResult findAllSigns(Integer page,
                                        Integer size,
-                                       String userCount) {
-        //分页
-        Page pag =PageHelper.startPage(page,size);
-
-        //...
-
+                                       String userCount)  {
+        List<Sign> signs = new ArrayList<Sign>();
+        Page pag = new Page();
+        if(StringUtils.isNotEmpty(userCount)){
+            User user = userService.getUserByCount(userCount);
+            pag =PageHelper.startPage(page,size);
+            Example example = new Example(Sign.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("userId",user.getUserId()); //参数为 属性名+值
+            example.orderBy("signTime").desc();//排序
+            signs = signMapper.selectByExample(example);
+        }else{
+            pag =PageHelper.startPage(page,size);
+            Example example = new Example(Sign.class);
+            Example.Criteria criteria = example.createCriteria();
+            example.orderBy("signTime").desc();//排序
+            signs = signMapper.selectByExample(example);
+        }
+        if (CollectionUtils.isEmpty(signs)) {
+            ExceptionCast.cast(CommonCode.DATA_IS_NULL);
+        }
+        List<SignVo> signVos = new ArrayList<SignVo>();
+        for(Sign sign : signs){
+            SignVo sv = new SignVo();
+            User user = userService.getUserById(sign.getUserId());
+            sv.setSignId(sign.getSignId());
+            sv.setSignTime(sign.getSignTime());
+            sv.setUserId(sign.getUserId());
+            sv.setUserCount(user.getUserCount());
+            sv.setUserName(user.getUserName());
+            signVos.add(sv);
+        }
         //解析分页结果
         PageInfo<SignVo> pageInfo = new PageInfo<SignVo>(pag.getResult());
         QueryResult queryResult = new QueryResult();
-        //queryResult.setList(checkinVos);
+        queryResult.setList(signVos);
         queryResult.setTotal(pageInfo.getTotal());
         return new QueryResponseResult(CommonCode.SUCCESS,queryResult);
+    }
+
+    /*
+     *根据user-id 查询签到记录
+     */
+    public QueryResult getSignByUserId(String user_id, Integer page, Integer size) {
+        if (StringUtils.isBlank(user_id)) {
+            ExceptionCast.cast(CommonCode.SELECT_NULL);
+            return null;
+        }
+        Page pag =PageHelper.startPage(page,size);
+        Sign sign = new Sign();
+        sign.setUserId(user_id);
+        List<Sign> signs = signMapper.select(sign);
+        if (CollectionUtils.isEmpty(signs)) {
+            ExceptionCast.cast(CommonCode.DATA_IS_NULL);
+        }
+        //解析分页结果
+        PageInfo<Sign> pageInfo = new PageInfo<>(pag.getResult());
+        return new QueryResult(signs, pageInfo.getTotal());
+
     }
 
     /*
@@ -72,7 +121,7 @@ public class SignService {
     * 根据user_id删除签到记录
     * */
     @Transactional
-    public void deleteCheckinByUserId(String userId) {
+    public void deleteSignByUserId(String userId) {
         //1.先找
         Sign sign = new Sign();
         sign.setUserId(userId);
@@ -93,7 +142,6 @@ public class SignService {
             ExceptionCast.cast(CommonCode.DELETE_FAIL);
         }
     }
-
     /*
     *根据签到id删除
     * */

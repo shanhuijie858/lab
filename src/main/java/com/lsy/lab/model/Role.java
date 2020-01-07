@@ -1,26 +1,27 @@
-package com.lsy.lab.model.vo;
+package com.lsy.lab.model;
 
-import com.lsy.lab.model.Seat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import tk.mybatis.mapper.annotation.NameStyle;
 import tk.mybatis.mapper.code.Style;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * @author Shan HuiJie
- * @Description: 座位表
- * @Date 2019.12.03 14:53
+ * @Description:
+ * @Date 2019.12.16 11:00
  */
 @Data    //getter setter hashCode equals
+@Table(name = "role")
 @NoArgsConstructor //是生成一个无参的构造函数
 @AllArgsConstructor //生成一个有参构造函数
-public class SeatVo extends Seat implements Serializable {
-
-    private  String userName; //用户姓名
-    private String seatCount;
+@NameStyle(Style.normal)   //数据库字段与属性名写法保持一致
+public class Role {
+    @Id
+    private String roleId;
+    private String roleName;
+    private String status;
 }

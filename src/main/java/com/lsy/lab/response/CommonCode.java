@@ -30,6 +30,7 @@ public enum CommonCode implements ResultCode{
     COUNT_EXIST(false,313,"账号已存在"),
     PASSWORD_ERROR(false,318,"密码错误"),
     PASSWORD_OLD_ERROR(false,319,"原密码输入错误"),
+    BIRTH_ERROR(false,320,"出生日期晚于当前时间，无法计算"),
 
     ;
     //    private static ImmutableMap<Integer, CommonCode> codes ;

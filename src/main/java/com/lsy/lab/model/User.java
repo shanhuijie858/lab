@@ -30,13 +30,14 @@ public class User implements Serializable {
     private String userName;
     private String userPass;
     private Integer gender; //用户性别 0：男 1：女
+    private String userGrade; //用户年级
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
     private Date birth; //用户出生年月
     private String userCount;
     private String userPhone;
     private String userEmail;
     private String description;
-    private boolean userState;
+    private Integer userState;
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
     private Date createTime;
 

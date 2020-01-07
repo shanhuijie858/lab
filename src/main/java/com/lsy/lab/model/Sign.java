@@ -17,7 +17,7 @@ import java.util.Date;
  * @Date
  */
 @Data
-@Table(name = "member_checkin")
+@Table(name = "sign")
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.normal)

@@ -14,14 +14,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserListRequest {
-    //用户ID
-    String userCount;
-
-    //用户昵称
-    String userName;
-
-    //角色
-    String roleId;
-
+public class SeatListRequest {
+    private  Integer seatNum; //座位编号
+    private String userName;  //姓名
+    private String userCount; //工号学号
 }

@@ -1,5 +1,6 @@
 package com.lsy.lab.model.vo;
 
+import com.lsy.lab.model.Sign;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,16 +18,9 @@ import java.util.Date;
  * @Date
  */
 @Data
-@Table(name = "member_checkin")
 @NoArgsConstructor
 @AllArgsConstructor
-@NameStyle(Style.normal)
-public class SignVo implements Serializable {
-    private String signId; //签到id
+public class SignVo extends Sign implements Serializable {
     private String userCount; //用户工号
-    private String userName;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date signTime; //签到时间
-
-
+    private String userName; //姓名
 }
